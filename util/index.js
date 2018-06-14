@@ -2,33 +2,46 @@
 
 const Big = require('big.js')
 
-const constructDimensions = (viewPoint, viewBox) => {
-  const big = {
-    width: {
-      viewPoint: Big(viewPoint.width),
-      viewBox: Big(viewBox.width)
-    },
-    height: {
-      viewPoint: Big(viewPoint.height),
-      viewBox: Big(viewBox.height)
-    }
-  }
-  return Object.assign({}, big, {
-    widthScale: big.height.viewPoint.div(big.height.viewBox).mul(big.width.viewBox),
-    heightScale: big.width.viewPoint.div(big.width.viewBox).mul(big.height.viewBox)
-  })
+const constructDimensions = (view) => {
+  const { width, height } = view
+  return { width: Big(width), height: Big(height) }
 }
 
-const constructParameters = (dimensions, orientation) => {
-  const value = dimensions[orientation]
-  const scaledValue = dimensions[`${orientation}Scale`]
-  return {
-    l: value.viewPoint,
-    hl: value.viewPoint.div(2),
-    L: value.viewBox,
-    hL: value.viewBox.div(2),
-    dl: value.viewPoint.minus(scaledValue).abs().div(2),
-  }
+const calculateTransformedLength = (viewpoint, viewBox, transformSide, scaleSide) => {
+  const scaleFactor = viewpoint[scaleSide].div(viewBox[scaleSide])
+  return viewBox[transformSide].mul(scaleFactor)
 }
 
-module.exports = { constructDimensions, constructParameters }
+const constructParametersEqual = (viewpoint, viewBox, side) => {
+  const [ l, L ] = [ viewpoint[side], viewBox[side] ]
+  return { l, L }
+}
+
+const constructParametersTransform = (viewpoint, viewBox, transformSide, scaleSide) => {
+  const [ l, L ] = [ viewpoint[transformSide], viewBox[transformSide] ]
+  const [ hl, hL ] = [ l, L ].map(n => n.div(2))
+  const tl = calculateTransformedLength(viewpoint, viewBox, transformSide, scaleSide)
+  const dl = l.minus(tl).div(2).abs()
+
+  return { l, L, hl, hL, dl }
+}
+
+const constructParameters = (viewpoint, viewBox, method) => {
+  const equalWidth = constructParametersEqual(viewpoint, viewBox, 'width')
+  const equalHeight = constructParametersEqual(viewpoint, viewBox, 'height')
+  const transformedWidth = constructParametersTransform(viewpoint, viewBox, 'width', 'height')
+  const transformedHeight = constructParametersTransform(viewpoint, viewBox, 'height', 'width')
+  const methods = {
+    equal: { width: equalWidth, height: equalHeight },
+    width: { width: transformedWidth, height: equalHeight },
+    height: { width: equalWidth, height: transformedHeight }
+  }
+
+  return methods[method]
+}
+
+module.exports = {
+  constructDimensions,
+  constructParameters,
+  calculateTransformedLength,
+}
