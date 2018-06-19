@@ -1,29 +1,18 @@
 'use strict'
 
 const Big = require('big.js')
+const {
+  constructParametersEqual,
+  constructParametersTransform
+} = require('./parameters')
+
+const calculateTransformedLength = (viewpoint, viewBox, transformSide, scaleSide) => {
+  return viewBox[transformSide].mul(viewpoint[scaleSide].div(viewBox[scaleSide]))
+}
 
 const constructDimensions = (view) => {
   const { width, height } = view
   return { width: Big(width), height: Big(height) }
-}
-
-const calculateTransformedLength = (viewpoint, viewBox, transformSide, scaleSide) => {
-  const scaleFactor = viewpoint[scaleSide].div(viewBox[scaleSide])
-  return viewBox[transformSide].mul(scaleFactor)
-}
-
-const constructParametersEqual = (viewpoint, viewBox, side) => {
-  const [ l, L ] = [ viewpoint[side], viewBox[side] ]
-  return { l, L }
-}
-
-const constructParametersTransform = (viewpoint, viewBox, transformSide, scaleSide) => {
-  const [ l, L ] = [ viewpoint[transformSide], viewBox[transformSide] ]
-  const [ hl, hL ] = [ l, L ].map(n => n.div(2))
-  const tl = calculateTransformedLength(viewpoint, viewBox, transformSide, scaleSide)
-  const dl = l.minus(tl).div(2).abs()
-
-  return { l, L, hl, hL, dl }
 }
 
 const constructParameters = (viewpoint, viewBox, method) => {
@@ -41,7 +30,7 @@ const constructParameters = (viewpoint, viewBox, method) => {
 }
 
 module.exports = {
+  calculateTransformedLength,
   constructDimensions,
   constructParameters,
-  calculateTransformedLength,
 }

@@ -1,0 +1,3 @@
+--require chai
+--recursive
+--ui bdd
