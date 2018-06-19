@@ -12,8 +12,8 @@ const requireScaler = (condition, pointToBox, boxToPoint) => {
   })
 }
 
-describe('scaler', () => {
-  let scaler, direction, viewpoint, viewBox
+describe('scaler.generateScaler', () => {
+  let scaler, viewpoint, viewBox
   let pointTobox, boxToPoint
   let isAspectRatioEqual, shouldScaleHorizontally, shouldScaleVertically
 
