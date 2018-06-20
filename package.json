@@ -1,6 +1,6 @@
 {
   "name": "svg-coordinate-map",
-  "version": "1.1.01",
+  "version": "1.1.0",
   "description": "Map coordinate from viewport to viewBox",
   "main": "lib/index.js",
   "scripts": {
