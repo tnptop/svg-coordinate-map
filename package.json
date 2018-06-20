@@ -6,8 +6,8 @@
   "scripts": {
     "test": "mocha ./test",
     "test:watch": "npm run test --watch",
-    "coverage": "nyc --check-coverage --statements 100 --branches 100 --lines 100 --reporter=lcov --reporter=text npm run test && nyc report --reporter=text-lcov",
-    "coveralls": "npm run coverage | coveralls"
+    "coverage": "nyc --check-coverage --statements 100 --branches 100 --lines 100 --reporter=lcov --reporter=text npm run test",
+    "coveralls": "npm run coverage && nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
