@@ -1,4 +1,4 @@
-# svg-coordinate-map
+# svg-coordinate-map [![CircleCI](https://circleci.com/gh/tnptop/svg-coordinate-map.svg?style=svg)](https://circleci.com/gh/tnptop/svg-coordinate-map) [![Coverage Status](https://coveralls.io/repos/github/tnptop/svg-coordinate-map/badge.svg?branch=master)](https://coveralls.io/github/tnptop/svg-coordinate-map?branch=master)
 
 > Map coordinate values in viewpoint to viewBox (and vice versa)
 
