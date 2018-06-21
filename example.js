@@ -3,7 +3,7 @@
 const viewPoint = { width: 50, height: 90 }
 const viewBox = { width: 100, height: 300 }
 
-const Mapper = require('./')
+const Mapper = require('svg-coordinate-map')
 const mapPointToBox = Mapper(viewPoint, viewBox, 'pointToBox')
 const mapBoxToPoint = Mapper(viewPoint, viewBox, 'boxToPoint')
 
